@@ -1,0 +1,93 @@
+FASTAPI SETUP :
+
+create virtual environment  - python -m venv  environment_name
+
+To activate -  environment_name/scripts/activate
+
+create file - main.py
+
+install -  pip install fastapi uvicorn
+
+run - uvicon main:app --reload  ||  uvicorn app.main:app --reload (if we create folder inside venv)
+
+Auto Documentation ( postman or thunderclient ) :  http://127.0.0.1:8000/docs
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+DATABASE CONNECTION : (postgresql password : post123)
+
+install - pip install sqlalchemy psycopg2-binary python-dotenv
+
+create .env file with data -  DATABASE_URL=postgresql://postgres:post123@localhost:5432/fastapi_db
+
+create database connection file -   database.py
+
+create model (table creation) connection file -  model.py
+
+create schema file for validating repsonse and request -   schemas.py
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+migration using -- alembic  
+
+install -- pip install alembic
+
+run (it will create new folder named 
+    alembic inside the backend folder)    - alembic init alembic  
+
+open (alembic.ini ) file -  search for  (sqlalchemy.url = ) 
+                           replace your db connection credentials 
+
+
+open (alembic folder inside env.py) -  add import (from app.database import Base
+                                         from app import models)
+                                                    
+                                      search for (target_metadata)
+                                      this (target_metadata = none) to  ( target_metadata = Base.metadata)
+
+
+First migration (existing tables)  -  alembic revision --autogenerate -m "initial"
+
+                                      alembic upgrade head
+
+
+Before anything (important)
+Make sure you REMOVED this from main.py:
+Base.metadata.create_all(bind=engine)
+
+
+General Rule (Remember forever)
+1) Change models.py
+2) Generate migration
+3) Apply migration
+
+
+alembic revision --autogenerate -m "message"
+alembic upgrade head
+
+
+-- -----------------------------------------------------------------------------------------------------------------------
+
+paskage to do authentication
+
+install -  pip install "passlib[bcrypt]==1.7.4"
+           pip install "bcrypt==3.2.2"
+
+
+                                 
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+

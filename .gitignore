@@ -1,0 +1,30 @@
+# --------------------
+# Python
+# --------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+.env
+backend/.env
+
+venv/
+docs/
+backend/docs/
+
+Lib/
+Scripts/
+Include/
+pyvenv.cfg
+
+# --------------------
+# Node
+# --------------------
+node_modules/
+dist/
+
+# --------------------
+# IDE
+# --------------------
+.vscode/

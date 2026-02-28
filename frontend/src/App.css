@@ -1,0 +1,16 @@
+.markdown-content {
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.markdown-content pre {
+  background: #0f172a;
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+.markdown-content code {
+  font-family: monospace;
+}
