@@ -11,7 +11,7 @@ app=FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173","https://docs-ochre-nu.vercel.app/login","https://docs-ochre-nu.vercel.app"],        # allow frontend
+    allow_origins=["http://localhost:5173","https://docs-ochre-nu.vercel.app"],        # allow frontend
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
