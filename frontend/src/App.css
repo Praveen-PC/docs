@@ -71,3 +71,70 @@
 .register-link:hover {
   text-decoration: underline;
 }
+
+.sidebar-active {
+  background: linear-gradient(135deg, #EEF2FF, #F8FAFC) !important;
+  color: #4F46E5 !important;
+  font-weight: 600;
+  border: 1px solid #C7D2FE !important;
+  border-radius: 10px !important;
+}
+
+
+
+/* Remove ugly black focus outline */
+button:focus,
+button:active,
+button:focus-visible,
+.btn:focus,
+.btn:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Sidebar active link style */
+.sidebar-active {
+  background: linear-gradient(135deg, #EEF2FF, #F8FAFC) !important;
+  color: #4F46E5 !important;
+  font-weight: 600;
+  border: 1px solid #C7D2FE !important;
+  border-radius: 10px !important;
+}
+
+/* Soft violet focus ring instead of black */
+button:focus-visible {
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.25) !important;
+}
+
+/* Remove bootstrap popover button border */
+.popover .btn {
+  border: none !important;
+}
+
+.popover .btn:focus {
+  background-color: #EEF2FF !important;
+  color: #4F46E5 !important;
+}
+
+
+.model-selector-btn {
+  background: linear-gradient(135deg, #EEF2FF, #F8FAFC);
+  border: 1px solid #E2E8F0;
+  color: #334155;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+/* Hover */
+.model-selector-btn:hover {
+  background: #EEF2FF;
+  border-color: #C7D2FE;
+  color: #4F46E5;
+}
+
+/* Focus (no black border) */
+.model-selector-btn:focus,
+.model-selector-btn:active {
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.25) !important;
+}

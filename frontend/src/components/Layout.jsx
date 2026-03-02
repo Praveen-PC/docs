@@ -104,7 +104,7 @@ const Layout = () => {
     navigate("/dashboard");
     setData([]);
     setChatID(null);
-    localStorage.removeItem("chatID")
+    localStorage.removeItem("chatID");
 
     if (isMobile) {
       setSidebarOpen(false);
@@ -202,7 +202,7 @@ const Layout = () => {
   return (
     <div className="d-flex w-100 vh-100 overflow-hidden">
       <div
-        className="bg-light border-end d-flex flex-column"
+        className="bg-light border-end d-flex flex-column "
         // style={{
         //   width: sidebarOpen ? "225px" : "60px",
         //   transition: "all 0.3s ease",
@@ -213,7 +213,7 @@ const Layout = () => {
         style={{
           width: isMobile
             ? sidebarOpen
-              ? "250px"
+              ? "240px"
               : "0px"
             : sidebarOpen
               ? "225px"
@@ -237,16 +237,22 @@ const Layout = () => {
               Docs
             </h5>
           )}
-         <button
-  className="btn btn-sm fw-bold ms-auto"
-  onClick={() => setSidebarOpen(!sidebarOpen)}
->
-  {isMobile
-    ? (sidebarOpen ? <FaTimes size={18} /> : <FaBars size={18} />)
-    : (sidebarOpen ? <FaBars /> : <FaChevronRight />)
-  }
-</button>
-         
+          <button
+            className="btn btn-sm fw-bold ms-auto"
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+          >
+            {isMobile ? (
+              sidebarOpen ? (
+                <FaTimes size={18} />
+              ) : (
+                <FaBars size={18} />
+              )
+            ) : sidebarOpen ? (
+              <FaBars />
+            ) : (
+              <FaChevronRight />
+            )}
+          </button>
         </div>
 
         <div
@@ -263,11 +269,18 @@ const Layout = () => {
                   <li key={id}>
                     <NavLink
                       to={value.link}
-                      className={`btn ${chatID === null ? "" : "border-0"}  w-100 d-flex align-items-center mb-2 ${
-                        sidebarOpen
-                          ? "justify-content-start gap-2 text-start"
-                          : "justify-content-center"
-                      }`}
+                      onClick={() => {
+                        if (isMobile) {
+                          setSidebarOpen(false);
+                        }
+                      }}
+                      className={({ isActive }) =>
+                        `btn w-100 d-flex align-items-center mb-2 ${
+                          sidebarOpen
+                            ? "justify-content-start gap-2 text-start"
+                            : "justify-content-center"
+                        } ${isActive ? "sidebar-active" : "border-0"}`
+                      }
                     >
                       <Icon />
                       {sidebarOpen && value?.name}
@@ -406,7 +419,7 @@ const Layout = () => {
       </div>
 
       <div className="d-flex flex-column flex-grow-1 overflow-hidden">
-        <nav className="navbar navbar-light bg-light border-bottom">
+        <nav className="navbar navbar-light bg-light border-bottom py-3">
           <div className="container-fluid d-flex justify-content-between">
             <div className="d-flex align-items-center gap-2">
               {/* Mobile Menu Button */}
@@ -428,13 +441,16 @@ const Layout = () => {
                 rootClose
               >
                 <button
-                  style={{
-                    background: "linear-gradient(135deg, #EEF2FF, #F8FAFC)",
-                  }}
-                  className="px-3 text-dark fw-semibold border rounded-pill btn-sm"
+                  className="sidebar-active  model-selector-btn px-3 py-1 d-flex align-items-center gap-2 rounded-pill"
+                  // className="model-selector-btn px-3 py-1 d-flex align-items-center gap-2 rounded-pill"
                 >
-                  {selectedModel}
-                  <span className="ms-2">▾</span>
+                  {selectedModel === "LLM" ? (
+                    <FaCogs size={14} />
+                  ) : (
+                    <FaLayerGroup size={14} />
+                  )}
+                  <span>{selectedModel}</span>
+                  <span>▾</span>
                 </button>
               </OverlayTrigger>
             </div>
@@ -447,7 +463,7 @@ const Layout = () => {
               onToggle={(isVisible) => setShowPopover(isVisible)}
               rootClose
             >
-              <button className="btn btn-sm">
+              <button className="btn btn-sm border-0">
                 <FaEllipsisV />
               </button>
             </OverlayTrigger>
