@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 import { FaUserCircle, FaSignOutAlt } from "react-icons/fa";
 import api from "../axios/api";
 import { FaTachometerAlt, FaUsers, FaInfoCircle } from "react-icons/fa";
+
+import { FaBrain, FaCogs, FaLayerGroup, FaDatabase } from "react-icons/fa";
 import {
   FaRobot,
   FaFileAlt,
@@ -37,13 +39,15 @@ const Layout = () => {
 
   const [hoveredChat, setHoveredChat] = useState(null);
 
+  const [modelPopover, setModelPopOver] = useState(false);
+
   const handleLogout = () => {
     logout();
   };
 
   const handleNavigateToProfile = () => {
     navigate("/profile");
-    setShowPopover(!isVisible);
+    setShowPopover(false);
   };
 
   const threeDot = (
@@ -77,30 +81,6 @@ const Layout = () => {
     // { name: "Users", link: "/users", icon: FaUsers },
   ];
 
-  const modelType = (
-    <Popover id="popover-basic">
-      <Popover.Body>
-        <div className="d-flex flex-column">
-          <button
-            className="btn btn-sm text-start"
-            onClick={handleNavigateToProfile}
-          >
-            <span className="me-1">
-              <FaUserCircle />
-            </span>{" "}
-            LLM
-          </button>
-          <button className="btn btn-sm text-start" onClick={handleLogout}>
-            <span className="me-1">
-              <FaSignOutAlt />
-            </span>{" "}
-            RAG
-          </button>
-        </div>
-      </Popover.Body>
-    </Popover>
-  );
-
   const models = [
     {
       name: "LLM",
@@ -111,10 +91,6 @@ const Layout = () => {
       icon: FaFileAlt,
     },
   ];
-
-  const handleChangeModel = (e) => {
-    setSelectedModel(e.target.value);
-  };
 
   const handleNewChat = () => {
     navigate("/dashboard");
@@ -144,8 +120,6 @@ const Layout = () => {
 
       const response = await api.get(`/model/getchat/${value.chat_id}`);
       setData(response.data);
-
-      console.log("value", value);
     } catch (error) {
       throw error;
     }
@@ -166,6 +140,39 @@ const Layout = () => {
       console.log(error);
     }
   };
+
+  const handleChangeModel = (value) => {
+    setSelectedModel(value);
+    setModelPopOver(false);
+  };
+
+
+  const modelType = (
+    <Popover id="popover-basic">
+      <Popover.Body>
+        <div className="d-flex flex-column">
+          <button
+            className="btn btn-sm text-start"
+            onClick={() => handleChangeModel("LLM")}
+          >
+            <span className="me-1">
+              <FaCogs />
+            </span>{" "}
+            LLM
+          </button>
+          <button
+            className="btn btn-sm text-start"
+            onClick={() => handleChangeModel("RAG")}
+          >
+            <span className="me-1">
+              <FaLayerGroup />
+            </span>{" "}
+            RAG
+          </button>
+        </div>
+      </Popover.Body>
+    </Popover>
+  );
 
   // renderingg
 
@@ -188,7 +195,7 @@ const Layout = () => {
                 color: "#4F46E5",
               }}
             >
-              Kindrix
+              Docs
             </h5>
           )}
           <button
@@ -351,20 +358,25 @@ const Layout = () => {
         <nav className="navbar navbar-light bg-light border-bottom">
           <div className="container-fluid">
             <span className="navbar-brand fw-bold">
-              <select
-                style={{ width: "120px" }}
-                value={selectedModel}
-                onChange={handleChangeModel}
-                name=""
-                className="form-select-sm form-control form-select "
-                id=""
+              <OverlayTrigger
+                trigger="click"
+                placement="right"
+                overlay={modelType}
+                show={modelPopover}
+                onToggle={(isVisible) => setModelPopOver(isVisible)}
+                rootClose
+                auto
               >
-                {models.map((value, id) => (
-                  <option key={id} value={value.name}>
-                    {value.name}
-                  </option>
-                ))}
-              </select>
+                <button
+                  style={{
+                    background: "linear-gradient(135deg, #EEF2FF, #F8FAFC)",
+                  }}
+                  className="px-3 text-dark fw-semibold border rounded-pill btn-sm mb-0 btn"
+                >
+                  {selectedModel}
+                  <span className="ms-2">▾</span>
+                </button>
+              </OverlayTrigger>
             </span>
             <OverlayTrigger
               trigger="click"
