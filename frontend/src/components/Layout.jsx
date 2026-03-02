@@ -279,7 +279,7 @@ const Layout = () => {
                           sidebarOpen
                             ? "justify-content-start gap-2 text-start"
                             : "justify-content-center"
-                        } ${isActive ? "sidebar-active" : "border-0"}`
+                        } ${isActive  ? "sidebar-active" : "border-0"}`
                       }
                     >
                       <Icon />
