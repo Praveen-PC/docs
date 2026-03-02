@@ -101,7 +101,7 @@ return (
       <div className="text-center mb-4">
         <h3 className="login-title">Create Account</h3>
         <p className="login-subtitle">
-          Join AI Docs and start exploring intelligent workflows
+          Join Docs and start exploring intelligent workflows
         </p>
       </div>
 
@@ -112,7 +112,7 @@ return (
           <input
             type="text"
             name="name"
-            placeholder="John Doe"
+            placeholder="Donald Trump"
             value={userData.name}
             className="form-control custom-input"
             onChange={handleChange}

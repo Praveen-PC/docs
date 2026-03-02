@@ -42,8 +42,18 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    localStorage.clear();
-    setUser(null);
+    // localStorage.clear();
+    // setUser(null);
+
+  localStorage.removeItem("access_token");
+  localStorage.removeItem("refresh_token");
+  localStorage.removeItem("user");
+  localStorage.removeItem("chatID");
+
+  setUser(null);
+  setChatID(null);
+  setData([]);
+  setchatHistory([]);
   };
 
   return (

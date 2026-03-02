@@ -48,8 +48,8 @@ const Login = () => {
     <div className="login-card">
 
       <div className="text-center mb-4">
-        <h3 className="login-title">Welcome Back</h3>
-        <p className="login-subtitle">Sign in to continue to AI Docs</p>
+        <h3 className="login-title">Welcome </h3>
+        <p className="login-subtitle">Sign in to continue Docs</p>
       </div>
 
       <form onSubmit={handleLogin}>

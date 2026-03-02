@@ -32,7 +32,9 @@ const Layout = () => {
     setChatID,
     user,
   } = useAuth();
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  // const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
 
   const navigate = useNavigate();
   const [showPopover, setShowPopover] = useState(false);
@@ -92,10 +94,21 @@ const Layout = () => {
     },
   ];
 
+  // const handleNewChat = () => {
+  //   navigate("/dashboard");
+  //   setData([]);
+  //   setChatID(null);
+  // };
+
   const handleNewChat = () => {
     navigate("/dashboard");
     setData([]);
     setChatID(null);
+    localStorage.removeItem("chatID")
+
+    if (isMobile) {
+      setSidebarOpen(false);
+    }
   };
 
   const fetchChatHistory = async () => {
@@ -111,7 +124,7 @@ const Layout = () => {
     if (user) {
       fetchChatHistory();
     }
-  }, [user, chatID]);
+  }, [user]);
 
   const handleGetSpecificChat = async (value) => {
     try {
@@ -146,7 +159,6 @@ const Layout = () => {
     setModelPopOver(false);
   };
 
-
   const modelType = (
     <Popover id="popover-basic">
       <Popover.Body>
@@ -174,17 +186,44 @@ const Layout = () => {
     </Popover>
   );
 
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   // renderingg
 
   return (
     <div className="d-flex w-100 vh-100 overflow-hidden">
       <div
         className="bg-light border-end d-flex flex-column"
+        // style={{
+        //   width: sidebarOpen ? "225px" : "60px",
+        //   transition: "all 0.3s ease",
+        //   overflow: "hidden",
+        //   flexShrink: 0,
+        // }}
+
         style={{
-          width: sidebarOpen ? "225px" : "60px",
+          width: isMobile
+            ? sidebarOpen
+              ? "250px"
+              : "0px"
+            : sidebarOpen
+              ? "225px"
+              : "60px",
           transition: "all 0.3s ease",
           overflow: "hidden",
           flexShrink: 0,
+          position: isMobile ? "fixed" : "relative",
+          zIndex: 1000,
+          height: "100vh",
         }}
       >
         <div className="d-flex justify-content-between align-items-center p-3">
@@ -198,12 +237,16 @@ const Layout = () => {
               Docs
             </h5>
           )}
-          <button
-            className="btn btn-sm fw-bold ms-auto"
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-          >
-            {sidebarOpen ? <FaBars /> : <FaChevronRight />}
-          </button>
+         <button
+  className="btn btn-sm fw-bold ms-auto"
+  onClick={() => setSidebarOpen(!sidebarOpen)}
+>
+  {isMobile
+    ? (sidebarOpen ? <FaTimes size={18} /> : <FaBars size={18} />)
+    : (sidebarOpen ? <FaBars /> : <FaChevronRight />)
+  }
+</button>
+         
         </div>
 
         <div
@@ -300,9 +343,17 @@ const Layout = () => {
                           }}
                         >
                           <button
+                            // onClick={() => {
+                            //   setChatID(value.chat_id);
+                            //   handleGetSpecificChat(value);
+                            // }}
                             onClick={() => {
                               setChatID(value.chat_id);
                               handleGetSpecificChat(value);
+
+                              if (isMobile) {
+                                setSidebarOpen(false);
+                              }
                             }}
                             className="border-0 bg-transparent text-start p-0"
                             style={{
@@ -356,8 +407,18 @@ const Layout = () => {
 
       <div className="d-flex flex-column flex-grow-1 overflow-hidden">
         <nav className="navbar navbar-light bg-light border-bottom">
-          <div className="container-fluid">
-            <span className="navbar-brand fw-bold">
+          <div className="container-fluid d-flex justify-content-between">
+            <div className="d-flex align-items-center gap-2">
+              {/* Mobile Menu Button */}
+              {isMobile && (
+                <button
+                  className="btn btn-sm"
+                  onClick={() => setSidebarOpen(true)}
+                >
+                  <FaBars size={18} />
+                </button>
+              )}
+
               <OverlayTrigger
                 trigger="click"
                 placement="right"
@@ -365,19 +426,19 @@ const Layout = () => {
                 show={modelPopover}
                 onToggle={(isVisible) => setModelPopOver(isVisible)}
                 rootClose
-                auto
               >
                 <button
                   style={{
                     background: "linear-gradient(135deg, #EEF2FF, #F8FAFC)",
                   }}
-                  className="px-3 text-dark fw-semibold border rounded-pill btn-sm mb-0 btn"
+                  className="px-3 text-dark fw-semibold border rounded-pill btn-sm"
                 >
                   {selectedModel}
                   <span className="ms-2">▾</span>
                 </button>
               </OverlayTrigger>
-            </span>
+            </div>
+
             <OverlayTrigger
               trigger="click"
               placement="left"
@@ -385,7 +446,6 @@ const Layout = () => {
               show={showPopover}
               onToggle={(isVisible) => setShowPopover(isVisible)}
               rootClose
-              auto
             >
               <button className="btn btn-sm">
                 <FaEllipsisV />

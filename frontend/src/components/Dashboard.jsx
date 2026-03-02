@@ -12,14 +12,14 @@ const Dashboard = () => {
   const textareaRef = useRef();
   const bottomRef = useRef(null);
 
-  const { user, chatID, setChatID, selectedModel, data, setData } = useAuth();
+  const { user, chatID, setChatID, selectedModel, data, setData, setchatHistory } = useAuth();
 
   useEffect(() => {
     const savedChatID = localStorage.getItem("chatID");
     if (savedChatID && !chatID) {
       setChatID(Number(savedChatID));
     }
-  }, []);
+  }, [setChatID]);
 
   useEffect(() => {
     if (chatID) {
@@ -50,9 +50,21 @@ const Dashboard = () => {
         mode: selectedModel,
       });
 
+      // if (!chatID) {
+      //   setChatID(response.data.chat_id);
+      // }
+
       if (!chatID) {
-        setChatID(response.data.chat_id);
-      }
+  setChatID(response.data.chat_id);
+
+  setchatHistory((prev) => [
+    {
+      chat_id: response.data.chat_id,
+      first_question: prompt,
+    },
+    ...prev,
+  ]);
+}
 
       const assistantMessage = {
         id: Date.now() + 1,
@@ -76,6 +88,29 @@ const Dashboard = () => {
       handleSendPrompt();
     }
   };
+
+
+
+  useEffect(() => {
+  const loadChatIfExists = async () => {
+    if (chatID && data.length === 0) {
+      try {
+        const response = await api.get(`/model/getchat/${chatID}`);
+        setData(response.data);
+      } catch (error) {
+        console.log(error);
+        setChatID(null);
+        localStorage.removeItem("chatID");
+      }
+    }
+  };
+
+  loadChatIfExists();
+}, [chatID]);
+
+  // rendering
+
+
 
   return (
     <div className="d-flex flex-column h-100" style={{ background: "#F8FAFC" }}>
