@@ -356,10 +356,6 @@ const Layout = () => {
                           }}
                         >
                           <button
-                            // onClick={() => {
-                            //   setChatID(value.chat_id);
-                            //   handleGetSpecificChat(value);
-                            // }}
                             onClick={() => {
                               setChatID(value.chat_id);
                               handleGetSpecificChat(value);
@@ -377,7 +373,8 @@ const Layout = () => {
                               color: "inherit",
                             }}
                           >
-                            {value.first_question?.slice(0, 35)}
+                            {value.first_question?.charAt(0).toUpperCase() +
+                              value.first_question?.slice(1)}
                           </button>
 
                           {hoveredChat === value.chat_id && (
